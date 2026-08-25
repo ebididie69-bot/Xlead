@@ -1,0 +1,69 @@
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { Radar, Globe2, Mail, TrendingUp } from "lucide-react";
+import DashboardLayout from "../components/DashboardLayout";
+import api from "../services/api";
+
+function StatCard({ icon: Icon, label, value, accent, delay }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay, duration: 0.35 }}
+      className="card p-5"
+    >
+      <div className="flex items-center justify-between mb-3">
+        <Icon size={18} className={accent} />
+      </div>
+      <p className="font-display text-3xl font-semibold text-ash-light">{value}</p>
+      <p className="text-ash text-xs mt-1">{label}</p>
+    </motion.div>
+  );
+}
+
+export default function Dashboard() {
+  const [stats, setStats] = useState({ leads: 0, highScore: 0, websites: 0, emailsSent: 0 });
+  const [backendError, setBackendError] = useState(false);
+
+  useEffect(() => {
+    // Fetch each independently so one failure doesn't zero out everything
+    const fetchStat = (promise, key, transform) =>
+      promise
+        .then((res) => setStats((prev) => ({ ...prev, [key]: transform(res.data) })))
+        .catch(() => setBackendError(true));
+
+    fetchStat(api.get("/api/leads"), "leads", (d) => d.length);
+    fetchStat(api.get("/api/leads"), "highScore", (d) => d.filter((l) => l.lead_score >= 80).length);
+    fetchStat(api.get("/api/websites"), "websites", (d) => d.length);
+    fetchStat(api.get("/api/emails", { params: { status: "sent" } }), "emailsSent", (d) => d.length);
+  }, []);
+
+  return (
+    <DashboardLayout>
+      <h1 className="font-display font-semibold text-2xl text-ash-light mb-1">Dashboard</h1>
+      <p className="text-ash text-sm mb-8">Pipeline overview for your outreach system.</p>
+
+      {backendError && (
+        <div className="card p-4 mb-6 border border-danger/30 text-sm text-ash">
+          Can't reach the backend right now — some numbers may be stale. Check that the API is deployed and{" "}
+          <code className="font-mono text-xs">VITE_API_URL</code> is set correctly.
+        </div>
+      )}
+
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <StatCard icon={Radar} label="Leads found" value={stats.leads} accent="text-signal" delay={0} />
+        <StatCard icon={TrendingUp} label="High-opportunity (80+)" value={stats.highScore} accent="text-brass" delay={0.05} />
+        <StatCard icon={Globe2} label="Websites generated" value={stats.websites} accent="text-signal" delay={0.1} />
+        <StatCard icon={Mail} label="Emails sent" value={stats.emailsSent} accent="text-brass" delay={0.15} />
+      </div>
+
+      <div className="card p-6">
+        <p className="text-ash-light font-medium mb-1">Workflow</p>
+        <p className="text-ash text-sm">
+          Lead Finder → Generated Websites → Email Queue. Each stage carries a lead forward —
+          find businesses without websites, generate a demo, then draft and review outreach before sending.
+        </p>
+      </div>
+    </DashboardLayout>
+  );
+}
