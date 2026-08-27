@@ -110,8 +110,11 @@ function ImportRow({ lead, idx, onRemove, onGenerate, generatingId, imported }) 
 }
 
 export default function LeadFinder() {
-  const [niches, setNiches] = useState([]);
-  const [form, setForm] = useState({ niche:"", country:"Nigeria", city:"", state:"", max_leads:20 });
+  // Pre-populate niches from the known list so the dropdown shows instantly
+  // without waiting for the API. API call below syncs in the background.
+  const DEFAULT_NICHES = Object.keys(NICHE_LABELS);
+  const [niches, setNiches] = useState(DEFAULT_NICHES);
+  const [form, setForm] = useState({ niche: DEFAULT_NICHES[0], country:"Nigeria", city:"", state:"", max_leads:20 });
   const [customCountry, setCustomCountry] = useState(false);
   const [results, setResults] = useState([]);
   const [searching, setSearching] = useState(false);
@@ -135,8 +138,12 @@ export default function LeadFinder() {
 
   useEffect(() => {
     api.get("/api/leads/niches")
-      .then((res) => { setNiches(res.data); setForm((f) => ({ ...f, niche: res.data[0] })); })
-      .catch(() => setError("Can't reach the backend right now."));
+      .then((res) => {
+        setNiches(res.data);
+        // Only update niche if it's still the default — don't override user selection
+        setForm((f) => ({ ...f, niche: f.niche || res.data[0] }));
+      })
+      .catch(() => {}); // Non-fatal — defaults already shown
   }, []);
 
   useEffect(() => {
