@@ -1,0 +1,62 @@
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+
+const API = import.meta.env.VITE_API_URL || "";
+
+export default function Login() {
+  const params = new URLSearchParams(window.location.search);
+  const error = params.get("error");
+  const [backendReady, setBackendReady] = useState(false);
+
+  useEffect(() => {
+    const wake = async () => {
+      try {
+        await fetch(`${API}/api/leads/niches`, {
+          credentials: "include",
+          signal: AbortSignal.timeout(60000),
+        });
+        setBackendReady(true);
+      } catch {
+        setBackendReady(true);
+      }
+    };
+    wake();
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-ink flex items-center justify-center">
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="card p-10 w-full max-w-sm text-center"
+      >
+        <div className="w-2.5 h-2.5 rounded-full bg-signal shadow-glow mx-auto mb-4" />
+        <h1 className="font-display font-semibold text-2xl text-ash-light mb-1">
+          LeadForge <span className="text-signal">AI</span>
+        </h1>
+        <p className="text-ash text-sm mb-8">Administrator access only</p>
+
+        {error === "unauthorized" && (
+          <p className="text-danger text-sm mb-4">
+            That Google account isn't authorized for this instance.
+          </p>
+        )}
+
+        {!backendReady && (
+          <p className="text-ash/40 text-xs mb-4 flex items-center justify-center gap-1.5">
+            <span className="inline-block w-1.5 h-1.5 rounded-full bg-ash/30 animate-pulse" />
+            Connecting to server…
+          </p>
+        )}
+
+        <a
+          href={`${API}/auth/login`}
+          className="btn-primary w-full inline-block"
+        >
+          Continue with Google
+        </a>
+      </motion.div>
+    </div>
+  );
+}
