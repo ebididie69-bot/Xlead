@@ -9,40 +9,29 @@ import Contact from "./Contact";
 
 const NAV_LINKS = [
   { to: "", label: "Home" },
+  { to: "about", label: "About Us" },
   { to: "services", label: "Services" },
-  { to: "about", label: "About" },
   { to: "gallery", label: "Gallery" },
   { to: "contact", label: "Contact" },
 ];
 
 export default function SalonSpaSite({ content, theme, images = {}, business, base }) {
   const colors = theme?.colors || {
-    primary: "#FAF6F1",
-    secondary: "#FFFFFF",
-    accent: "#C9956C",
+    primary: "#0A0A0A",
+    secondary: "#161616",
+    accent: "#C9A227",
   };
-
   return (
-    <div
-      style={{ background: colors.primary, color: "#2D1B2E", minHeight: "100vh" }}
-      className="font-sans antialiased"
-    >
-      <DemoNav
-        business={business}
-        links={NAV_LINKS}
-        accent={colors.accent}
-        bg={colors.primary}
-        base={base}
-        ctaLabel="Book Now"
-      />
+    <div style={{ background: colors.primary, color: "#F5F5F4", minHeight: "100vh" }} className="font-sans antialiased">
+      <DemoNav business={business} links={NAV_LINKS} accent={colors.accent} bg="transparent" base={base} ctaLabel="Book Now" textLight />
       <Routes>
-        <Route index element={<Home content={content} images={images} colors={colors} base={base} />} />
+        <Route index element={<Home content={content} images={images} colors={colors} base={base} business={business} />} />
         <Route path="services" element={<Services content={content} colors={colors} base={base} />} />
         <Route path="about" element={<About content={content} images={images} colors={colors} />} />
         <Route path="gallery" element={<Gallery images={images} colors={colors} />} />
         <Route path="contact" element={<Contact content={content} colors={colors} />} />
       </Routes>
-      <DemoFooter business={business} accent={colors.accent} bg={colors.primary} muted="#8B7A7A" />
+      <DemoFooter business={business} accent={colors.accent} bg="#050505" muted="#A8A29E" />
     </div>
   );
 }

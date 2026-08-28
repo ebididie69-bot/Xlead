@@ -2,114 +2,90 @@ import { motion } from "framer-motion";
 import Reveal from "../shared/Reveal";
 import SmartImage from "../shared/SmartImage";
 
-export default function Home({ content, images, colors, base }) {
-  const stats = [
-    { value: "2,400+", label: "Active Members" },
-    { value: "85+", label: "Classes / Week" },
-    { value: "12", label: "Years Open" },
+export default function Home({ content, images, colors, base, business }) {
+  const steps = [
+    { title: "Gym Movement", desc: "Train with purpose using proven movement patterns." },
+    { title: "Fitness Practice", desc: "Structured workouts for body and mind." },
+    { title: "Achievement", desc: "Track progress and crush every goal." },
   ];
 
   return (
-    <div className="overflow-hidden">
-      {/* Full-bleed Hero with diagonal slash + 3D depth layers */}
-      <section className="relative h-screen min-h-[700px] flex items-end">
+    <div style={{ background: colors.primary, color: "#FAFAFA" }}>
+      {/* Dark red hero — Fitkit style */}
+      <section className="relative min-h-[88vh] md:min-h-screen flex items-center">
         <div className="absolute inset-0">
-          <SmartImage
-            image={images?.hero}
-            accent={colors.accent}
-            className="w-full h-full object-cover"
-            priority
-          />
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(to top, #080808 0%, rgba(8,8,8,0.75) 45%, rgba(8,8,8,0.25) 100%)",
-            }}
-          />
-          {/* 3D depth glow layer */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background:
-                "radial-gradient(ellipse at 70% 25%, rgba(234,255,0,0.15) 0%, transparent 50%)",
-            }}
-          />
+          <SmartImage image={images?.hero} accent={colors.accent} className="w-full h-full" priority />
+          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-black/40" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-black/30" />
         </div>
-
-        {/* Strong diagonal slash cutout */}
-        <div
-          className="absolute bottom-0 left-0 right-0 h-36 pointer-events-none"
-          style={{
-            background: colors.primary,
-            clipPath: "polygon(0 55%, 100% 0, 100% 100%, 0 100%)",
-          }}
-        />
-
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 pb-44 md:pb-52">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
+        <div className="relative z-10 max-w-6xl mx-auto px-5 sm:px-8 w-full py-28">
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-xs font-bold tracking-[0.3em] uppercase mb-4 text-white/60">
+            Keep Your Body Fitness With Workouts
+          </motion.p>
+          <motion.h1
+            initial={{ opacity: 0, y: 22 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black leading-[0.92] tracking-tighter max-w-3xl"
           >
-            <p
-              className="text-sm font-bold tracking-[0.35em] uppercase mb-5"
-              style={{ color: colors.accent }}
-            >
-              Unleash Your Potential
-            </p>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black leading-[0.88] tracking-tighter max-w-4xl">
-              {content?.hero_title || "Train Harder. Get Stronger."}
-            </h1>
-            <p className="mt-7 text-lg md:text-xl text-white/65 max-w-xl leading-relaxed">
-              {content?.hero_subtitle ||
-                "Premium training, elite coaching, and a community that pushes you past your limits."}
-            </p>
-
-            <motion.a
-              href={`${base}/contact`}
-              className="inline-block mt-12 px-12 py-5 font-black text-lg tracking-wide uppercase relative"
-              style={{
-                background: colors.accent,
-                color: "#080808",
-                borderRadius: 0,
-              }}
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.97 }}
-            >
-              {/* Signature: pulsing electric glow */}
-              <motion.span
-                className="absolute inset-0 pointer-events-none"
-                animate={{
-                  boxShadow: [
-                    "0 0 0 0 rgba(234,255,0,0.7)",
-                    "0 0 0 24px rgba(234,255,0,0)",
-                    "0 0 0 0 rgba(234,255,0,0)",
-                  ],
-                }}
-                transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
-              />
-              <span className="relative z-10">
-                {content?.call_to_action?.button_text || "Join Now"}
-              </span>
-            </motion.a>
+            {content?.hero_title || (
+              <>
+                YOUR FITNESS<br />
+                <span style={{ color: colors.accent }}>YOUR VICTORY</span>
+              </>
+            )}
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="mt-6 text-white/65 max-w-md text-sm sm:text-base"
+          >
+            {content?.hero_subtitle ||
+              `Premium training and community at ${business || "our gym"}.`}
+          </motion.p>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.18 }} className="mt-8 flex flex-wrap gap-3 items-center">
+            <a href={`${base}/contact`} className="px-8 py-3.5 text-sm font-bold uppercase tracking-wide text-white" style={{ background: colors.accent }}>
+              {content?.call_to_action?.button_text || "View Class Schedule"}
+            </a>
+            <span className="text-xs text-white/50 font-medium">2k+ Satisfied Members</span>
           </motion.div>
         </div>
       </section>
 
-      {/* Electric yellow stats strip */}
-      <section className="relative z-20 -mt-20" style={{ background: colors.accent }}>
-        <div className="max-w-7xl mx-auto px-6 py-10">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-0">
-            {stats.map((stat, i) => (
+      {/* About split */}
+      <section className="py-16 md:py-24 px-5 sm:px-8 bg-white text-zinc-900">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+          <Reveal>
+            <div className="aspect-[4/3] rounded-lg overflow-hidden">
+              <SmartImage image={images?.about || images?.gallery_1} accent={colors.accent} className="w-full h-full" />
+            </div>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <h2 className="text-3xl sm:text-4xl font-black tracking-tight mb-4">We Have Lots Of Experience Gym Training</h2>
+            <p className="text-zinc-600 text-sm sm:text-base leading-relaxed mb-6">
+              {(content?.services || [])[0]?.description ||
+                "Individual and group sessions designed for real results — certified coaches, modern equipment."}
+            </p>
+            <a href={`${base}/about`} className="inline-block px-7 py-3 text-sm font-bold uppercase text-white" style={{ background: colors.accent }}>
+              Get Started
+            </a>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Process */}
+      <section className="py-16 md:py-20 px-5 sm:px-8">
+        <div className="max-w-5xl mx-auto">
+          <Reveal>
+            <h2 className="text-2xl sm:text-4xl font-black text-center mb-12 tracking-tight">Easy Steps To Achieve Your Goals</h2>
+          </Reveal>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            {steps.map((s, i) => (
               <Reveal key={i} delay={i * 0.1}>
-                <div className={`text-center md:text-left ${i < 2 ? "md:border-r md:border-black/15" : ""} md:px-12`}>
-                  <div className="text-4xl md:text-5xl font-black tracking-tighter" style={{ color: "#080808" }}>
-                    {stat.value}
-                  </div>
-                  <div className="mt-1.5 text-xs font-bold uppercase tracking-[0.2em]" style={{ color: "#080808" }}>
-                    {stat.label}
-                  </div>
+                <div className="text-center p-6 rounded-xl border border-white/10 bg-white/[0.03]">
+                  <div className="text-3xl font-black mb-3" style={{ color: colors.accent }}>0{i + 1}</div>
+                  <h3 className="font-bold mb-2">{s.title}</h3>
+                  <p className="text-sm text-white/50">{s.desc}</p>
                 </div>
               </Reveal>
             ))}
@@ -117,71 +93,13 @@ export default function Home({ content, images, colors, base }) {
         </div>
       </section>
 
-      {/* Services preview - staggered fade-up */}
-      <section className="py-28 md:py-36">
-        <div className="max-w-7xl mx-auto px-6">
-          <Reveal>
-            <h2 className="text-4xl md:text-5xl font-black tracking-tighter mb-3">
-              What We Offer
-            </h2>
-            <div className="w-28 h-1.5 mb-16" style={{ background: colors.accent }} />
-          </Reveal>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {(content?.services || []).slice(0, 3).map((service, i) => (
-              <Reveal key={i} delay={i * 0.13}>
-                <motion.div
-                  className="group relative p-9 h-full"
-                  style={{ background: colors.secondary, borderRadius: 0 }}
-                  whileHover={{ y: -10 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 18 }}
-                >
-                  <div
-                    className="absolute top-0 left-0 w-full h-1 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500"
-                    style={{ background: colors.accent }}
-                  />
-                  <h3 className="text-2xl font-bold mb-4 tracking-tight">{service.title}</h3>
-                  <p className="text-white/55 leading-relaxed">{service.description}</p>
-                </motion.div>
-              </Reveal>
-            ))}
-          </div>
-
-          <Reveal delay={0.35}>
-            <div className="mt-16 text-center">
-              <a
-                href={`${base}/services`}
-                className="inline-flex items-center gap-3 text-sm font-bold uppercase tracking-[0.2em] hover:gap-5 transition-all duration-300"
-                style={{ color: colors.accent }}
-              >
-                View All Services <span>→</span>
-              </a>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* Final CTA */}
-      <section className="py-28 border-t border-white/8">
-        <div className="max-w-3xl mx-auto px-6 text-center">
-          <Reveal>
-            <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-6">
-              {content?.call_to_action?.headline || "Ready to Transform?"}
-            </h2>
-            <p className="text-white/55 text-lg mb-12 max-w-lg mx-auto">
-              Join a community that refuses to settle for average.
-            </p>
-            <motion.a
-              href={`${base}/contact`}
-              className="inline-block px-14 py-5 font-black text-lg uppercase tracking-wide"
-              style={{ background: colors.accent, color: "#080808", borderRadius: 0 }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.97 }}
-            >
-              {content?.call_to_action?.button_text || "Start Today"}
-            </motion.a>
-          </Reveal>
-        </div>
+      <section className="py-16 px-5 text-center border-t border-white/10">
+        <Reveal>
+          <h2 className="text-2xl sm:text-4xl font-black mb-6">{content?.call_to_action?.headline || "Ready to transform?"}</h2>
+          <a href={`${base}/contact`} className="inline-block px-10 py-3.5 text-sm font-bold uppercase text-white" style={{ background: colors.accent }}>
+            {content?.call_to_action?.button_text || "Join Now"}
+          </a>
+        </Reveal>
       </section>
     </div>
   );
