@@ -1,199 +1,144 @@
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { motion } from "framer-motion";
 import Reveal from "../shared/Reveal";
 import SmartImage from "../shared/SmartImage";
-import { Shield, Clock, Wrench, Star, ChevronRight } from "lucide-react";
 
-const STATS = [
-  { value: "15+", label: "Years Experience" },
-  { value: "98%", label: "Customer Satisfaction" },
-  { value: "24h", label: "Turnaround Time" },
-  { value: "ASE", label: "Certified Technicians" },
+const TRUST = [
+  { t: "Certified Experts", d: "Skilled technicians you can trust." },
+  { t: "Advanced Tools", d: "Modern diagnostics and equipment." },
+  { t: "Transparent Pricing", d: "Clear quotes before we start." },
+];
+
+const SERVICES = [
+  { t: "Exterior Car Detailing", d: "Paint-safe washes and protection." },
+  { t: "Interior Deep Cleaning", d: "Cabin refresh for every ride." },
+  { t: "Engine Diagnostics", d: "Find issues before they grow." },
+  { t: "Brake & Suspension", d: "Safety-critical repairs done right." },
+  { t: "Oil Change & Maintenance", d: "Keep your vehicle running smooth." },
+  { t: "Paint Protection Film", d: "Shield your finish long-term." },
 ];
 
 export default function Home({ content, images, colors, base }) {
-  const heroRef = useRef(null);
-  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
-  const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
-
-  const accent = colors.accent || "#F0C531";
-  const bg = colors.primary || "#0A0F1E";
-  const surface = colors.secondary || "#111827";
+  const accent = colors.accent || "#F97316";
+  const bg = colors.primary || "#0B3D3A";
+  const gallery = images?.gallery || [];
 
   return (
-    <div style={{ background: bg, color: "#E8EAF0" }}>
-
-      {/* HERO — full-bleed dark with parallax image and diagonal slash */}
-      <section ref={heroRef} className="relative min-h-screen flex items-center overflow-hidden">
-        <motion.div style={{ y: heroY, opacity: heroOpacity }} className="absolute inset-0 z-0">
-          <SmartImage
-            image={images.hero}
-            accent={accent}
-            className="w-full h-full object-cover"
-            priority
-          />
-          {/* Dark gradient overlay — strong at bottom, lighter at top */}
-          <div className="absolute inset-0" style={{
-            background: `linear-gradient(135deg, ${bg}EE 0%, ${bg}AA 40%, ${bg}66 70%, ${bg}22 100%)`
-          }} />
-          {/* Diagonal slash accent */}
-          <div className="absolute bottom-0 left-0 right-0 h-32"
-            style={{ background: `linear-gradient(to top right, ${bg} 49%, transparent 51%)` }} />
-        </motion.div>
-
-        <div className="relative z-10 px-6 md:px-16 max-w-6xl mx-auto w-full pt-24 pb-32">
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          >
-            {/* Eyebrow */}
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-8 h-px" style={{ background: accent }} />
-              <span className="text-xs font-bold tracking-[0.25em] uppercase" style={{ color: accent }}>
-                ASE Certified Auto Repair
-              </span>
+    <div style={{ background: "#F4F7F6", color: "#0B1F1E", minHeight: "100vh" }}>
+      <section className="relative overflow-hidden" style={{ background: bg, color: "#F4F7F6" }}>
+        <div className="max-w-6xl mx-auto px-5 sm:px-8 py-16 md:py-24 grid lg:grid-cols-[1.2fr_0.9fr] gap-10 items-center">
+          <div>
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-xs tracking-[0.25em] uppercase text-white/50 mb-3">
+              Professional auto care
+            </motion.p>
+            <motion.h1 initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} className="text-4xl sm:text-5xl font-bold leading-[1.08]">
+              {content?.hero_title || (
+                <>
+                  Precision <span style={{ color: accent }}>Repairs</span> for Safe And Smooth Driving
+                </>
+              )}
+            </motion.h1>
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.12 }} className="mt-4 text-white/65 text-sm md:text-base max-w-md">
+              {content?.hero_subtitle ||
+                "From daily drivers to premium cars — detailing and repairs with modern tools and honest pricing."}
+            </motion.p>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="mt-7 flex flex-wrap gap-3">
+              <a href={`${base}/contact`} className="px-6 py-3 rounded-lg text-sm font-bold text-white" style={{ background: accent }}>
+                Request a Quote
+              </a>
+              <a href={`${base}/services`} className="px-6 py-3 rounded-lg text-sm font-medium border border-white/25">
+                Our Services
+              </a>
+            </motion.div>
+            <div className="mt-8 grid grid-cols-3 gap-3">
+              {TRUST.map((x) => (
+                <div key={x.t} className="rounded-xl p-3" style={{ background: "rgba(255,255,255,0.06)" }}>
+                  <p className="text-xs font-semibold" style={{ color: accent }}>{x.t}</p>
+                  <p className="text-[11px] text-white/45 mt-1 leading-snug">{x.d}</p>
+                </div>
+              ))}
             </div>
-
-            <h1 className="text-5xl md:text-7xl font-black leading-[0.95] mb-6 max-w-2xl"
-              style={{ letterSpacing: "-0.02em" }}>
-              {content.hero_title || "Your Car. Our Expertise."}
-            </h1>
-
-            <p className="text-lg opacity-70 mb-10 max-w-lg leading-relaxed">
-              {content.hero_subtitle || "Precision diagnostics. Honest service. Same-day repairs for most vehicles."}
-            </p>
-
-            <div className="flex flex-wrap gap-4">
-              <motion.a
-                href={`${base}/contact`}
-                whileHover={{ scale: 1.03, boxShadow: `0 0 30px ${accent}44` }}
-                whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center gap-2 px-8 py-4 font-bold text-sm tracking-wide rounded-none"
-                style={{ background: accent, color: "#0A0F1E" }}
-              >
-                {content.call_to_action?.button_text || "Book a Service"}
-                <ChevronRight size={16} />
-              </motion.a>
-              <motion.a
-                href={`${base}/services`}
-                whileHover={{ borderColor: accent, color: accent }}
-                className="inline-flex items-center gap-2 px-8 py-4 font-bold text-sm tracking-wide border transition-colors"
-                style={{ borderColor: "rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.7)" }}
-              >
-                View Services
-              </motion.a>
+          </div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="relative">
+            <div className="rounded-2xl overflow-hidden aspect-[4/5] max-w-md mx-auto shadow-2xl">
+              <SmartImage image={images?.hero} accent={accent} className="w-full h-full" priority />
+            </div>
+            <div
+              className="absolute -bottom-4 left-4 right-4 md:left-auto md:right-0 md:w-64 rounded-xl p-4 shadow-xl"
+              style={{ background: "#0E4A46", color: "#F4F7F6", border: "1px solid rgba(255,255,255,0.1)" }}
+            >
+              <p className="text-xs font-bold mb-2" style={{ color: accent }}>Schedule Your Service</p>
+              <p className="text-[11px] text-white/55 mb-3">Premium care — book at your convenience.</p>
+              <a href={`${base}/contact`} className="block text-center text-xs font-bold py-2.5 rounded-lg text-white" style={{ background: accent }}>
+                Confirm Appointment
+              </a>
             </div>
           </motion.div>
         </div>
-
-        {/* Animated scan line — mechanical feel */}
-        <motion.div
-          className="absolute right-0 top-0 bottom-0 w-px opacity-20"
-          style={{ background: `linear-gradient(to bottom, transparent, ${accent}, transparent)` }}
-          animate={{ y: ["-100%", "100%"] }}
-          transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-        />
       </section>
 
-      {/* STATS STRIP */}
-      <section style={{ background: accent }}>
-        <div className="max-w-5xl mx-auto px-6 py-6 grid grid-cols-2 md:grid-cols-4 gap-0">
-          {STATS.map((s, i) => (
-            <motion.div
-              key={s.label}
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="text-center py-2 border-r last:border-r-0"
-              style={{ borderColor: "rgba(0,0,0,0.15)", color: "#0A0F1E" }}
-            >
-              <div className="text-2xl font-black">{s.value}</div>
-              <div className="text-xs font-semibold uppercase tracking-wider opacity-70">{s.label}</div>
-            </motion.div>
-          ))}
+      <section className="py-16 md:py-20">
+        <div className="max-w-6xl mx-auto px-5 sm:px-8 grid md:grid-cols-2 gap-10 items-center">
+          <div className="grid grid-cols-2 gap-3">
+            <div className="rounded-2xl overflow-hidden aspect-square">
+              <SmartImage image={gallery[0] || images?.hero} accent={accent} className="w-full h-full" />
+            </div>
+            <div className="rounded-2xl overflow-hidden aspect-square mt-6">
+              <SmartImage image={gallery[1] || images?.hero} accent={accent} className="w-full h-full" />
+            </div>
+          </div>
+          <Reveal>
+            <p className="text-xs tracking-[0.25em] uppercase mb-2 opacity-50">About us</p>
+            <h2 className="text-3xl font-bold mb-4">Expert Care for Every Vehicle</h2>
+            <p className="text-sm opacity-60 leading-relaxed mb-6">
+              {content?.about_snippet ||
+                "Our certified team delivers high-quality repairs and detailing with transparent pricing and fast turnaround."}
+            </p>
+            <div className="flex gap-6 mb-6">
+              <div>
+                <p className="text-2xl font-bold" style={{ color: accent }}>15+</p>
+                <p className="text-xs opacity-50">Years experience</p>
+              </div>
+              <div>
+                <p className="text-2xl font-bold" style={{ color: accent }}>100%</p>
+                <p className="text-xs opacity-50">Quality guaranteed</p>
+              </div>
+            </div>
+            <a href={`${base}/about`} className="text-sm font-semibold" style={{ color: accent }}>Learn about us →</a>
+          </Reveal>
         </div>
       </section>
 
-      {/* SERVICES GRID */}
-      {content.services?.length > 0 && (
-        <section className="px-6 md:px-16 py-24 max-w-6xl mx-auto">
+      <section className="py-16" style={{ background: bg, color: "#F4F7F6" }}>
+        <div className="max-w-6xl mx-auto px-5 sm:px-8">
           <Reveal>
-            <div className="flex items-center gap-4 mb-14">
-              <div className="w-12 h-px" style={{ background: accent }} />
-              <h2 className="text-3xl md:text-4xl font-black tracking-tight">What We Fix</h2>
-            </div>
+            <h2 className="text-3xl font-bold mb-2">Expert Auto Services</h2>
+            <p className="text-white/50 text-sm mb-10">Full range of care tailored to modern vehicles.</p>
           </Reveal>
-
-          <div className="grid md:grid-cols-3 gap-px" style={{ background: "rgba(255,255,255,0.06)" }}>
-            {content.services.map((s, i) => (
-              <Reveal key={i} delay={i * 0.07}>
-                <motion.div
-                  whileHover={{ background: surface }}
-                  className="p-8 transition-colors group cursor-default"
-                  style={{ background: bg }}
-                >
-                  <div className="w-10 h-10 rounded-none flex items-center justify-center mb-6 transition-colors"
-                    style={{ background: `${accent}15`, border: `1px solid ${accent}33` }}>
-                    <Wrench size={18} style={{ color: accent }} />
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {SERVICES.map((s, i) => (
+              <Reveal key={s.t} delay={i * 0.05}>
+                <div className="rounded-xl p-5 h-full" style={{ background: "rgba(255,255,255,0.06)" }}>
+                  <div className="aspect-video rounded-lg overflow-hidden mb-3">
+                    <SmartImage image={gallery[i % Math.max(gallery.length, 1)] if False else (gallery[i] if i < len(gallery) else images?.hero)} accent={accent} className="w-full h-full" />
                   </div>
-                  <h3 className="font-bold text-lg mb-2 group-hover:text-white transition-colors">{s.title}</h3>
-                  <p className="text-sm opacity-55 leading-relaxed">{s.description}</p>
-                  <div className="mt-6 w-0 group-hover:w-8 h-px transition-all duration-300"
-                    style={{ background: accent }} />
-                </motion.div>
+                  <h3 className="font-semibold text-sm mb-1">{s.t}</h3>
+                  <p className="text-xs text-white/45">{s.d}</p>
+                </div>
               </Reveal>
             ))}
           </div>
-        </section>
-      )}
-
-      {/* TRUST STRIP */}
-      <section className="px-6 md:px-16 py-16 border-t border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
-        <div className="max-w-5xl mx-auto grid md:grid-cols-3 gap-10">
-          {[
-            { icon: Shield, title: "Guaranteed Work", desc: "All repairs backed by our 12-month / 12,000 mile warranty." },
-            { icon: Clock, title: "Same-Day Service", desc: "Most repairs completed the same day you bring your vehicle in." },
-            { icon: Star, title: "Honest Pricing", desc: "Transparent diagnostics and upfront quotes. No hidden charges." },
-          ].map(({ icon: Icon, title, desc }, i) => (
-            <Reveal key={title} delay={i * 0.1}>
-              <div className="flex gap-4">
-                <div className="shrink-0 w-10 h-10 flex items-center justify-center rounded-none"
-                  style={{ background: `${accent}15` }}>
-                  <Icon size={18} style={{ color: accent }} />
-                </div>
-                <div>
-                  <h3 className="font-bold mb-1">{title}</h3>
-                  <p className="text-sm opacity-55">{desc}</p>
-                </div>
-              </div>
-            </Reveal>
-          ))}
+          <div className="mt-8">
+            <a href={`${base}/services`} className="text-sm font-semibold" style={{ color: accent }}>View all services →</a>
+          </div>
         </div>
       </section>
 
-      {/* CTA BANNER */}
-      <section className="px-6 md:px-16 py-24 max-w-6xl mx-auto text-center">
-        <Reveal>
-          <h2 className="text-3xl md:text-5xl font-black mb-4 tracking-tight">
-            {content.call_to_action?.headline || "Ready to Get Back on the Road?"}
-          </h2>
-          <p className="opacity-55 mb-10 max-w-md mx-auto">
-            Book your appointment today — diagnostics included on all full-service visits.
-          </p>
-          <motion.a
-            href={`${base}/contact`}
-            whileHover={{ scale: 1.03, boxShadow: `0 0 40px ${accent}55` }}
-            whileTap={{ scale: 0.97 }}
-            className="inline-flex items-center gap-2 px-10 py-4 font-bold tracking-wide"
-            style={{ background: accent, color: "#0A0F1E" }}
-          >
-            {content.call_to_action?.button_text || "Book Now"}
-            <ChevronRight size={16} />
-          </motion.a>
-        </Reveal>
+      <section className="py-14 text-center">
+        <h2 className="text-2xl font-bold mb-3">Your Car Deserves the Best</h2>
+        <p className="text-sm opacity-55 mb-6 max-w-md mx-auto">Precision, quality, and convenience — book your next service today.</p>
+        <a href={`${base}/contact`} className="inline-flex px-7 py-3 rounded-lg text-sm font-bold text-white" style={{ background: accent }}>
+          Book Appointment
+        </a>
       </section>
     </div>
   );
