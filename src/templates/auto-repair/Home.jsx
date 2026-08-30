@@ -119,7 +119,7 @@ export default function Home({ content, images, colors, base }) {
               <Reveal key={s.t} delay={i * 0.05}>
                 <div className="rounded-xl p-5 h-full" style={{ background: "rgba(255,255,255,0.06)" }}>
                   <div className="aspect-video rounded-lg overflow-hidden mb-3">
-                    <SmartImage image={gallery[i % Math.max(gallery.length, 1)] if False else (gallery[i] if i < len(gallery) else images?.hero)} accent={accent} className="w-full h-full" />
+                    <SmartImage image={gallery[i] || images?.hero} accent={accent} className="w-full h-full" />
                   </div>
                   <h3 className="font-semibold text-sm mb-1">{s.t}</h3>
                   <p className="text-xs text-white/45">{s.d}</p>
