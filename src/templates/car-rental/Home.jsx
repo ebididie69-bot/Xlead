@@ -29,22 +29,23 @@ export default function Home({ content, images, colors, base, business }) {
           <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-black/30" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-black/20" />
         </motion.div>
-
         <div className="relative z-10 w-full max-w-6xl mx-auto px-5 sm:px-8 pb-16 md:pb-28 pt-28">
           <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
-            className="text-[11px] sm:text-xs font-semibold tracking-[0.35em] uppercase text-white/50 mb-4">
-            Premium mobility
-          </motion.p>
+            className="text-[11px] sm:text-xs font-semibold tracking-[0.35em] uppercase text-white/50 mb-4">Premium mobility</motion.p>
           <motion.h1 initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white max-w-2xl leading-[1.02]">
-            {content?.hero_title || (<><>Drive what<br /><span style={{ color: accent }}>you love</span></></>)}
+            {content?.hero_title || (
+              <>
+                Drive what{" "}
+                <span style={{ color: accent }}>you love</span>
+              </>
+            )}
           </motion.h1>
           <motion.p initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }}
             className="mt-5 text-white/65 max-w-md text-sm md:text-base leading-relaxed">
             {content?.hero_subtitle || `Stress-free rentals with transparent rates${business ? ` from ${business}` : ""}.`}
           </motion.p>
-
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.22 }}
             className="mt-8 rounded-2xl bg-white/95 backdrop-blur-sm p-3 md:p-4 shadow-[0_20px_60px_rgba(0,0,0,0.35)] max-w-3xl border border-white/20">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
@@ -57,14 +58,11 @@ export default function Home({ content, images, colors, base, business }) {
             </div>
             <motion.a href={`${base}/contact`} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
               className="mt-3 w-full md:w-auto md:float-right inline-flex justify-center px-8 py-3 rounded-xl text-sm font-semibold text-white shadow-lg"
-              style={{ background: accent, boxShadow: `0 10px 30px ${accent}55` }}>
-              Search fleet
-            </motion.a>
+              style={{ background: accent, boxShadow: `0 10px 30px ${accent}55` }}>Search fleet</motion.a>
             <div className="clear-both" />
           </motion.div>
         </div>
       </section>
-
       <section className="py-12 md:py-14 border-b border-black/5 bg-[#FAFAFA]">
         <div className="max-w-6xl mx-auto px-5 sm:px-8 grid grid-cols-2 md:grid-cols-4 gap-8">
           {FEATURES.map((f, i) => (
@@ -78,7 +76,6 @@ export default function Home({ content, images, colors, base, business }) {
           ))}
         </div>
       </section>
-
       <section className="py-16 md:py-24">
         <div className="max-w-6xl mx-auto px-5 sm:px-8">
           <Reveal>
@@ -88,11 +85,9 @@ export default function Home({ content, images, colors, base, business }) {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5">
             {CATEGORIES.map((c, i) => (
               <Reveal key={c.label} delay={i * 0.07}>
-                <motion.a href={`${base}/gallery`} whileHover={{ y: -4 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 22 }}
+                <motion.a href={`${base}/gallery`} whileHover={{ y: -4 }} transition={{ type: "spring", stiffness: 300, damping: 22 }}
                   className="block group rounded-2xl overflow-hidden relative aspect-[4/3] bg-neutral-100 shadow-sm hover:shadow-xl transition-shadow duration-500">
-                  <SmartImage image={img(c.slot)} accent={accent}
-                    className="w-full h-full absolute inset-0 transition-transform duration-700 group-hover:scale-110" />
+                  <SmartImage image={img(c.slot)} accent={accent} className="w-full h-full absolute inset-0 transition-transform duration-700 group-hover:scale-110" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-4 z-10">
                     <p className="text-white font-semibold text-sm tracking-wide">{c.label}</p>
@@ -104,27 +99,19 @@ export default function Home({ content, images, colors, base, business }) {
           </div>
         </div>
       </section>
-
       <section className="py-16 md:py-24 bg-[#FAFAFA]">
         <div className="max-w-6xl mx-auto px-5 sm:px-8 grid md:grid-cols-2 gap-10 md:gap-14 items-center">
           <Reveal>
-            <div className="rounded-3xl overflow-hidden aspect-[4/3] shadow-lg relative">
-              <SmartImage image={img("about")} accent={accent} className="w-full h-full" />
-            </div>
+            <div className="rounded-3xl overflow-hidden aspect-[4/3] shadow-lg"><SmartImage image={img("about")} accent={accent} className="w-full h-full" /></div>
           </Reveal>
           <Reveal delay={0.1}>
             <p className="text-[11px] font-semibold tracking-[0.3em] uppercase text-black/35 mb-3">Why rent with us</p>
             <h2 className="text-3xl md:text-4xl font-bold mb-5 tracking-tight leading-tight">A fleet built for every journey</h2>
-            <p className="text-sm md:text-base text-black/55 leading-relaxed mb-8">
-              {content?.about_snippet || "From weekend getaways to business travel, vehicles are maintained, insured, and ready when you are."}
-            </p>
-            <motion.a href={`${base}/services`} whileHover={{ x: 4 }} className="inline-flex items-center gap-2 text-sm font-semibold" style={{ color: accent }}>
-              View services <span aria-hidden>→</span>
-            </motion.a>
+            <p className="text-sm md:text-base text-black/55 leading-relaxed mb-8">{content?.about_snippet || "From weekend getaways to business travel, vehicles are maintained, insured, and ready when you are."}</p>
+            <motion.a href={`${base}/services`} whileHover={{ x: 4 }} className="inline-flex items-center gap-2 text-sm font-semibold" style={{ color: accent }}>View services <span aria-hidden>→</span></motion.a>
           </Reveal>
         </div>
       </section>
-
       <section className="relative py-20 md:py-28 overflow-hidden">
         <div className="absolute inset-0">
           <SmartImage image={img("gallery_2")} accent={accent} className="w-full h-full" />
@@ -138,9 +125,7 @@ export default function Home({ content, images, colors, base, business }) {
           </div>
           <motion.a href={`${base}/contact`} whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
             className="inline-flex self-start px-9 py-3.5 rounded-xl text-sm font-semibold text-white shrink-0"
-            style={{ background: accent, boxShadow: `0 12px 40px ${accent}66` }}>
-            Book now
-          </motion.a>
+            style={{ background: accent, boxShadow: `0 12px 40px ${accent}66` }}>Book now</motion.a>
         </div>
       </section>
     </div>
