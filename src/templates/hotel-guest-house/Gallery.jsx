@@ -1,43 +1,31 @@
-import { motion } from "framer-motion";
 import Reveal from "../shared/Reveal";
 import SmartImage from "../shared/SmartImage";
 
-export default function Gallery({ images, colors }) {
-  const accent = colors.accent || "#D4AF37";
-  const bg = colors.primary || "#1B3A2D";
-  const slots = [
-    { key: "gallery_1", col: "md:col-span-2", aspect: "aspect-[16/9]" },
-    { key: "gallery_2", col: "md:col-span-1", aspect: "aspect-[3/4]" },
-    { key: "gallery_3", col: "md:col-span-1", aspect: "aspect-[3/4]" },
-    { key: "gallery_4", col: "md:col-span-2", aspect: "aspect-[16/9]" },
-  ];
+const SLOTS = [
+  { key: "hero" }, { key: "about" }, { key: "gallery_1" },
+  { key: "gallery_2" }, { key: "gallery_3" }, { key: "gallery_4" },
+];
 
+export default function Gallery({ images, colors }) {
+  const accent = colors?.accent || "#C4A574";
+  const items = SLOTS.map((s) => ({ ...s, image: images?.[s.key] })).filter((x) => x.image?.url);
   return (
-    <div style={{ background: bg, color: "#F5F0E8", minHeight: "100vh" }}>
-      <section className="px-8 pt-28 pb-16 max-w-6xl mx-auto border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-8 h-px" style={{ background: accent }} />
-            <span className="text-xs font-bold tracking-[0.25em] uppercase" style={{ color: accent }}>Gallery</span>
-          </div>
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight" style={{ fontFamily: "Georgia, serif" }}>Gallery</h1>
-        </motion.div>
-      </section>
-      <section className="px-8 py-12 max-w-6xl mx-auto">
-        <div className="grid md:grid-cols-3 gap-3">
-          {slots.map(({ key, col, aspect }, i) => (
-            <Reveal key={key} delay={i * 0.1} className={col}>
-              <motion.div whileHover={{ scale: 1.01 }} className={`${aspect} overflow-hidden relative group`}>
-                <SmartImage image={images[key]} accent={accent} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  style={{ background: `${accent}18` }} />
-                <div className="absolute bottom-0 left-0 w-0 group-hover:w-full h-0.5 transition-all duration-500"
-                  style={{ background: accent }} />
-              </motion.div>
+    <div className="min-h-screen py-16 md:py-24 px-5 sm:px-8" style={{ background: colors?.primary || "#0F0F10", color: "#F5F0E8" }}>
+      <div className="max-w-6xl mx-auto">
+        <Reveal>
+          <p className="text-xs tracking-[0.3em] uppercase mb-2 opacity-50">Spaces</p>
+          <h1 className="text-3xl md:text-4xl font-semibold mb-10">Gallery</h1>
+        </Reveal>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {items.map((item, i) => (
+            <Reveal key={item.key} delay={i * 0.05}>
+              <div className={`rounded-2xl overflow-hidden ${i === 0 ? "sm:col-span-2 aspect-[16/9]" : "aspect-[4/3]"}`}>
+                <SmartImage image={item.image} accent={accent} className="w-full h-full" />
+              </div>
             </Reveal>
           ))}
         </div>
-      </section>
+      </div>
     </div>
   );
 }
